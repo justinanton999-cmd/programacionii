@@ -1,0 +1,49 @@
+# semana-08-control-compras
+
+Aplicación en Java para registrar y analizar las compras semanales de un hogar,
+utilizando Programación Orientada a Objetos y las colecciones ArrayList,
+HashSet y HashMap.
+
+## Estructura del proyecto
+
+semana-08-control-compras/
+├── src/
+│   ├── Producto.java
+│   └── MainControlCompras.java
+├── evidencias/
+├── README.md
+└── .gitignore
+
+## Funcionalidades
+
+- Registro de al menos 5 productos.
+- Validación de nombre, categoría, precio y cantidad.
+- Cálculo automático de subtotales.
+- Listado de categorías sin duplicados.
+- Total general y total por categoría.
+- Identificación del producto con mayor y menor gasto.
+- Categoría con mayor gasto.
+- Consulta de total por categoría.
+
+## Colecciones utilizadas
+
+| Colección | Responsabilidad |
+|---|---|
+| ArrayList<Producto> | Almacenar todos los productos registrados |
+| HashSet<String> | Almacenar categorías sin duplicados |
+| HashMap<String, Double> | Acumular total gastado por categoría |
+
+## Cómo ejecutar
+
+1. Clonar el repositorio:
+   git clone https://github.com/tu-usuario/semana-08-control-compras.git
+
+2. Abrir en IntelliJ IDEA.
+
+3. Ejecutar la clase MainControlCompras.
+
+## Autor
+
+Nombre Apellido — Carné justin anton 9941-25-20386
+Curso: Programación
+Fecha: 2025
