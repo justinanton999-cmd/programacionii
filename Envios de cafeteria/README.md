@@ -1,8 +1,8 @@
 # Sistema de Pedidos de Cafetería (PF-21)
 
 **Nombre:** Justin Alexander Anton Hernandez
-**Carné:** [Tu carné]
-**Curso:** [Nombre del curso]
+**Carné:** 9941-25-20386
+**Curso:** programacion 2
 
 ## Descripción del problema
 Este sistema permite administrar los pedidos de una cafetería, registrando al cliente, los productos solicitados (con su cantidad) y calculando el total a pagar de forma automática. Además, permite gestionar el estado de cada pedido (recibido, en preparación, listo, entregado).
