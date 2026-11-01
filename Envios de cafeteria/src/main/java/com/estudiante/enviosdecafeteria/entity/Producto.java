@@ -1,4 +1,4 @@
-package com.estudiante.enviosdeafeteria.entity;
+package com.estudiante.enviosdecafeteria.entity;
 
 import jakarta.persistence.*;
 

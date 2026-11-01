@@ -1,8 +1,8 @@
-package com.estudiante.enviosdeafeteria.controller;
+package com.estudiante.enviosdecafeteria.controller;
 
-import com.estudiante.enviosdeafeteria.dto.PedidoRequestDTO;
-import com.estudiante.enviosdeafeteria.dto.PedidoResponseDTO;
-import com.estudiante.enviosdeafeteria.service.PedidoService;
+import com.estudiante.enviosdecafeteria.dto.PedidoRequestDTO;
+import com.estudiante.enviosdecafeteria.dto.PedidoResponseDTO;
+import com.estudiante.enviosdecafeteria.service.PedidoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,5 +39,13 @@ public class PedidoController {
             @PathVariable Long id,
             @RequestParam String nuevoEstado) { // Se pasa como ?nuevoEstado=ENVIADO
         return ResponseEntity.ok(pedidoService.actualizarEstado(id, nuevoEstado));
+    }
+    @GetMapping("/estado")
+    public ResponseEntity<List<PedidoResponseDTO>> filtrarPorEstado(@RequestParam String estado) {
+        return ResponseEntity.ok(pedidoService.filtrarPorEstado(estado));
+    }
+    @GetMapping("/ventas-hoy")
+    public ResponseEntity<Double> ventasDelDia() {
+        return ResponseEntity.ok(pedidoService.obtenerVentasDelDia());
     }
 }

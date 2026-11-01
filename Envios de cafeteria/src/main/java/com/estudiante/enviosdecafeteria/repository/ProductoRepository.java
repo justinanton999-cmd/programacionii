@@ -1,6 +1,6 @@
-package com.estudiante.enviosdeafeteria.repository;
+package com.estudiante.enviosdecafeteria.repository;
 
-import com.estudiante.enviosdeafeteria.entity.Producto;
+import com.estudiante.enviosdecafeteria.entity.Producto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

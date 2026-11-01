@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cafetería - Pedidos</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f4f9; padding: 20px; }
+        .container { max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        h1, h2 { color: #333; text-align: center; }
+        input, select, button { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        button { background-color: #28a745; color: white; border: none; cursor: pointer; font-weight: bold; }
+        button:hover { background-color: #218838; }
+        #mensaje { margin-top: 15px; padding: 10px; border-radius: 4px; text-align: center; }
+        .success { background-color: #d4edda; color: #155724; }
+        .error { background-color: #f8d7da; color: #721c24; }
+        .ventas-box { background-color: #e2e3e5; padding: 15px; text-align: center; border-radius: 8px; margin-top: 20px; font-size: 1.2em; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>☕ Cafetería</h1>
+
+    <div class="ventas-box">
+        <strong>Ventas de Hoy:</strong> Q<span id="totalVentas">0.00</span>
+    </div>
+
+    <h2>Crear Nuevo Pedido</h2>
+    <form id="pedidoForm">
+        <label>Nombre del Cliente:</label>
+        <input type="text" id="cliente" required placeholder="Ej. Justin">
+
+        <label>Selecciona el Producto:</label>
+        <select id="productoId">
+            <option value="1">Café Americano (Q15.00)</option>
+            <option value="2">Sándwich de Pollo (Q25.00)</option>
+        </select>
+
+        <label>Cantidad:</label>
+        <input type="number" id="cantidad" value="1" min="1" required>
+
+        <button type="submit">Crear Pedido</button>
+    </form>
+
+    <div id="mensaje"></div>
+</div>
+
+<script>
+    const API_URL = 'http://localhost:8080/api/pedidos';
+
+    async function cargarVentas() {
+        try {
+            const response = await fetch(`${API_URL}/ventas-hoy`);
+            const total = await response.json();
+            document.getElementById('totalVentas').innerText = total.toFixed(2);
+        } catch (error) {
+            console.error("Error al cargar ventas", error);
+        }
+    }
+
+    document.getElementById('pedidoForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const cliente = document.getElementById('cliente').value;
+        const productoId = parseInt(document.getElementById('productoId').value);
+        const cantidad = parseInt(document.getElementById('cantidad').value);
+
+        const nuevoPedido = {
+            cliente: cliente,
+            detalles: [{ productoId: productoId, cantidad: cantidad }]
+        };
+
+        try {
+            const response = await fetch(API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(nuevoPedido)
+            });
+
+            const mensajeDiv = document.getElementById('mensaje');
+
+            if (response.status === 201) {
+                mensajeDiv.innerText = "¡Pedido creado con éxito!";
+                mensajeDiv.className = "success";
+                document.getElementById('pedidoForm').reset();
+                cargarVentas(); // Actualizamos el total de ventas
+            } else {
+                const errorData = await response.json();
+                mensajeDiv.innerText = "Error: " + (errorData.mensaje || "Revisa los datos");
+                mensajeDiv.className = "error";
+            }
+        } catch (error) {
+            document.getElementById('mensaje').innerText = "Error de conexión con el servidor.";
+            document.getElementById('mensaje').className = "error";
+        }
+    });
+
+    cargarVentas();
+</script>
+
+</body>
+</html>
