@@ -2,6 +2,7 @@ package com.estudiante.enviosdecafeteria.entity;
 import java.util.List;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "pedidos")
@@ -15,7 +16,7 @@ public class Pedido {
     private String cliente;
 
     @Column(nullable = false)
-    private Double total;
+    private BigDecimal total;
 
     @Column(nullable = false)
     private String estado;
@@ -34,8 +35,8 @@ public class Pedido {
     public String getCliente() { return cliente; }
     public void setCliente(String cliente) { this.cliente = cliente; }
 
-    public Double getTotal() { return total; }
-    public void setTotal(Double total) { this.total = total; }
+    public BigDecimal getTotal() { return total; }
+    public void setTotal(BigDecimal total) { this.total = total; }
 
     public String getEstado() { return estado; }
     public void setEstado(String estado) { this.estado = estado; }

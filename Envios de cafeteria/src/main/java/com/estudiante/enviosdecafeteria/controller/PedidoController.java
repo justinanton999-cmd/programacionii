@@ -9,8 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
-
 @RestController
 @RequestMapping("/api/pedidos")
 public class PedidoController {
@@ -45,7 +45,7 @@ public class PedidoController {
         return ResponseEntity.ok(pedidoService.filtrarPorEstado(estado));
     }
     @GetMapping("/ventas-hoy")
-    public ResponseEntity<Double> ventasDelDia() {
+    public ResponseEntity<BigDecimal> ventasDelDia() {
         return ResponseEntity.ok(pedidoService.obtenerVentasDelDia());
     }
 }

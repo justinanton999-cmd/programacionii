@@ -33,10 +33,7 @@
 
         <label>Selecciona el Producto:</label>
         <select id="productoId">
-            <option value="1">Café Americano (Q15.00)</option>
-            <option value="2">Sándwich de Pollo (Q25.00)</option>
         </select>
-
         <label>Cantidad:</label>
         <input type="number" id="cantidad" value="1" min="1" required>
 
@@ -47,8 +44,22 @@
 </div>
 
 <script>
-    const API_URL = 'http://localhost:8080/api/pedidos';
 
+    const API_URL = 'http://localhost:8080/api/pedidos';
+    async function cargarProductos() {
+        try {
+            const res = await fetch('http://localhost:8080/api/productos');
+            const productos = await res.json();
+            const select = document.getElementById('productoId');
+            select.innerHTML = ''; // Limpiar el select
+
+            productos.forEach(p => {
+                select.innerHTML += `<option value="${p.id}">${p.nombre} (Q${p.precio})</option>`;
+            });
+        } catch (error) {
+            console.error("Error al cargar productos:", error);
+        }
+    }
     async function cargarVentas() {
         try {
             const response = await fetch(`${API_URL}/ventas-hoy`);
@@ -56,6 +67,19 @@
             document.getElementById('totalVentas').innerText = total.toFixed(2);
         } catch (error) {
             console.error("Error al cargar ventas", error);
+        }
+        async function cargarProductos() {
+            try {
+                const res = await fetch('http://localhost:8080/api/productos');
+                const productos = await res.json();
+                const select = document.getElementById('productoId');
+                select.innerHTML = '';
+                productos.forEach(p => {
+                    select.innerHTML += `<option value="${p.id}">${p.nombre} (Q${p.precio})</option>`;
+                });
+            } catch (error) {
+                console.error("Error al cargar productos:", error);
+            }
         }
     }
 
@@ -97,6 +121,7 @@
     });
 
     cargarVentas();
+    cargarProductos();
 </script>
 
 </body>

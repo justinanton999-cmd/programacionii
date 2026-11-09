@@ -13,6 +13,7 @@ import com.estudiante.enviosdecafeteria.repository.ProductoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -33,7 +34,7 @@ public class PedidoService {
         pedido.setFecha(LocalDateTime.now());
         pedido.setEstado("recibido");
 
-        double totalCalculado = 0.0;
+        BigDecimal totalCalculado = BigDecimal.ZERO;
         List<DetallePedido> detalles = new ArrayList<>();
 
         for (DetalleRequestDTO det : dto.getDetalles()) {
@@ -46,7 +47,10 @@ public class PedidoService {
             detalle.setCantidad(det.getCantidad());
             detalles.add(detalle);
 
-            totalCalculado += producto.getPrecio() * det.getCantidad();
+            BigDecimal precioProducto = producto.getPrecio();
+            BigDecimal cantidad = new BigDecimal(det.getCantidad());
+            BigDecimal subtotal = precioProducto.multiply(cantidad);
+            totalCalculado = totalCalculado.add(subtotal);
         }
 
         pedido.setDetalles(detalles);
@@ -73,16 +77,25 @@ public class PedidoService {
 
     public PedidoResponseDTO actualizarEstado(Long id, String nuevoEstado) {
         Pedido pedido = pedidoRepository.findById(id)
-                .orElseThrow(() -> new RecursoNoEncontradoException("Pedido no encontrado con ID: " + id));
+                .orElseThrow(() -> new RecursoNoEncontradoException("Pedido no encontrado"));
 
-        // Validar los estados permitidos por el PF-21
-        String estadoMin = nuevoEstado.toLowerCase();
-        if (!estadoMin.equals("recibido") && !estadoMin.equals("en preparación")
-                && !estadoMin.equals("listo") && !estadoMin.equals("entregado")) {
-            throw new ReglaNegocioException("Estado no válido. Use: recibido, en preparación, listo o entregado");
+        String estadoActual = pedido.getEstado();
+        String estadoNuevo = nuevoEstado.toLowerCase();
+
+        if (estadoActual.equals("entregado")) {
+            throw new ReglaNegocioException("Un pedido entregado no puede cambiar de estado.");
+        }
+        if (estadoActual.equals("listo") && !estadoNuevo.equals("entregado")) {
+            throw new ReglaNegocioException("Un pedido listo solo puede pasar a entregado.");
+        }
+        if (estadoActual.equals("en preparación") && !estadoNuevo.equals("listo")) {
+            throw new ReglaNegocioException("Un pedido en preparación solo puede pasar a listo.");
+        }
+        if (estadoActual.equals("recibido") && !estadoNuevo.equals("en preparación")) {
+            throw new ReglaNegocioException("Un pedido recibido solo puede pasar a en preparación.");
         }
 
-        pedido.setEstado(estadoMin);
+        pedido.setEstado(estadoNuevo);
         return convertirAResponseDTO(pedidoRepository.save(pedido));
     }
 
@@ -103,8 +116,8 @@ public class PedidoService {
         }
         return respuesta;
     }
-    public Double obtenerVentasDelDia() {
-        Double total = pedidoRepository.sumarVentasDelDia(LocalDate.now());
-        return total != null ? total : 0.0;
+    public BigDecimal obtenerVentasDelDia() {
+        BigDecimal total = pedidoRepository.sumarVentasDelDia(LocalDate.now());
+        return total != null ? total : BigDecimal.ZERO;
     }
 }

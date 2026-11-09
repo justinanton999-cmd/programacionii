@@ -8,8 +8,8 @@
 Este sistema permite administrar los pedidos de una cafetería, registrando al cliente, los productos solicitados (con su cantidad) y calculando el total a pagar de forma automática. Además, permite gestionar el estado de cada pedido (recibido, en preparación, listo, entregado).
 
 ## Tecnologías utilizadas
-* Java 17
-* Spring Boot 3
+* Java 21
+* Spring Boot 4.1.1
 * Spring Data JPA
 * PostgreSQL
 * HTML, CSS, JavaScript (Frontend)

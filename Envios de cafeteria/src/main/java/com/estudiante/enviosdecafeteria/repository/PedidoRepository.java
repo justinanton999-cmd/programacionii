@@ -8,11 +8,11 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
-
+import java.math.BigDecimal;
 @Repository
 public interface PedidoRepository extends JpaRepository<Pedido, Long> {
 
     List<Pedido> findByEstado(String estado);
-    @Query("SELECT SUM(p.total) FROM Pedido p WHERE CAST(p.fecha AS date) = :fecha")
-    Double sumarVentasDelDia(@Param("fecha") LocalDate fecha);
+    @Query("SELECT SUM(p.total) FROM Pedido p WHERE CAST(p.fecha AS date) = :fecha AND p.estado = 'entregado'")
+    BigDecimal sumarVentasDelDia(@Param("fecha") LocalDate fecha);
 }

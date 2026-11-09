@@ -1,6 +1,7 @@
 package com.estudiante.enviosdecafeteria.entity;
 
 import jakarta.persistence.*;
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "productos")
@@ -14,7 +15,7 @@ public class Producto {
     private String nombre;
 
     @Column(nullable = false)
-    private Double precio;
+    private BigDecimal precio;
 
     public Producto() {}
 
@@ -24,6 +25,6 @@ public class Producto {
     public String getNombre() { return nombre; }
     public void setNombre(String nombre) { this.nombre = nombre; }
 
-    public Double getPrecio() { return precio; }
-    public void setPrecio(Double precio) { this.precio = precio; }
+    public BigDecimal getPrecio() { return precio; }
+    public void setPrecio(BigDecimal precio) { this.precio = precio; }
 }
